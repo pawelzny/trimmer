@@ -24,9 +24,9 @@ and you want to trim it to 15 characters long. You have two options:
 
 ### Trim to characters length:
 
-```PHP
+```php
 <?PHP
-use pawelzny\Trimmer\Trimmer;
+use Trimmer\Trimmer;
 
 $trim = new Trimmer('Helps with trimming long string', $length=15);
 $trim->toCharacters(); // output: Helps with trim...
@@ -35,9 +35,9 @@ $trim->toCharacters(); // output: Helps with trim...
 
 ### Trim to words length:
 
-```PHP
+```php
 <?PHP
-use pawelzny\Trimmer\Trimmer;
+use Trimmer\Trimmer;
 
 $trim = new Trimmer('Helps with trimming long string', $length=15);
 $trim->toWords(); // output: Helps with...
@@ -54,9 +54,9 @@ Supported API can be used on runtime.
 
 ## Build in delimiter constants:
 
-```PHP
+```php
 <?PHP
-use pawelzny\Trimmer\Trimmer;
+use Trimmer\Trimmer;
 
 echo Trimmer::ELIPSIS; // ...
 echo Trimmer::EOL; // [end of line]
@@ -67,9 +67,9 @@ echo Trimmer::TABULATOR; // [tab character]
 
 ## Public properties:
 
-```PHP
+```php
 <?PHP
-use pawelzny\Trimmer\Trimmer;
+use Trimmer\Trimmer;
 
 $trim = new Trimmer('Lorem ipsum', $length=5, $delimiter=Trimmer::ELIPSIS);
 
@@ -86,14 +86,14 @@ echo $trim->length; // 5
 This exception is throw always when length property is not type of Integer or Null.
 You can catch this exception exclusively.
 
-```PHP
+```php
 <?PHP
 
-use pawelzny\Trimmer\Trimmer;
+use Trimmer\Trimmer;
 
 try {
     $trim = new Trimmer('Lorem ipsum', $length='not an integer or null');
-} catch (pawelzny\Trimmer\TrimmerLengthException) {
+} catch (Trimmer\TrimmerLengthException) {
     die('something goes wrong');
 }
 ```
@@ -104,10 +104,10 @@ try {
 ### Create new Trimmer object
 `Trimmer: constructor(string: $string [, int: $length=null [, string: $delimiter=self::ELIPSIS]])`
 
-```PHP
+```php
 <?PHP
 
-use pawelzny\Trimmer\Trimmer;
+use Trimmer\Trimmer;
 
 $trim = new Trimmer('Lorem ipsum', $length=5, $delimiter=Trimmer::EOL);
 ```
@@ -118,9 +118,9 @@ $trim = new Trimmer('Lorem ipsum', $length=5, $delimiter=Trimmer::EOL);
 
 **Caution!**: delimiter length will be automatically substracted from trimming length.
 
-```PHP
+```php
 <?PHP
-use pawelzny\Trimmer\Trimmer;
+use Trimmer\Trimmer;
 
 $trim = new Trimmer('my funky string');
 $trim->setLength(30);
@@ -131,9 +131,9 @@ Default delimiter is set to Trimmer::ELIPSIS which is 3 characters length.
 ### Set Delimiter
 `null: setDelimiter(string: $delimiter)`
 
-```PHP
+```php
 <?PHP
-use pawelzny\Trimmer\Trimmer;
+use Trimmer\Trimmer;
 
 $trim = new Trimmer('my funky string', $length=6);
 $trim->setDelimiter('[read more]');
@@ -144,9 +144,9 @@ $trim->delimiter; // [read more]
 ### Trim to characters length
 `string: toCharacters()`
 
-```PHP
+```php
 <?PHP
-use pawelzny\Trimmer\Trimmer;
+use Trimmer\Trimmer;
 
 $trim = new Trimmer('my funky string', $length=6);
 echo $trim->toCharacters(); // my fun...
@@ -156,9 +156,9 @@ echo $trim->toCharacters(); // my fun...
 ### Trim to whole words
 `string: toWords()`
 
-```PHP
+```php
 <?PHP
-use pawelzny\Trimmer\Trimmer;
+use Trimmer\Trimmer;
 
 $trim = new Trimmer('my funky string', $length=11);
 echo $trim->toWords(); // my funky...

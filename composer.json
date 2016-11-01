@@ -9,14 +9,16 @@
     ],
     "type": "library",
     "license": "ISC",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "scripts": {
         "test": "phpunit"
     },
     "authors": [
         {
             "name": "Paweł Zadrożny",
-            "email": "pawel.zny@gmail.com"
+            "email": "pawel.zny@gmail.com",
+            "homepage": "https://pawelzny.com",
+            "role": "Owner and Developer"
         }
     ],
     "support": {
