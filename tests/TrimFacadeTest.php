@@ -1,16 +1,19 @@
 <?php
+
 use PHPUnit\Framework\TestCase;
 use Trimmer\Services\CharsTrimmer;
 use Trimmer\Services\WordsTrimmer;
-use Trimmer\Trims;
+use Trimmer\Trim;
 
-class TrimsFacadeTest extends TestCase
+
+class TrimFacadeTest extends TestCase
 {
     public $testLength;
     public $testDelimiter;
     public $testText;
 
-    public function setUp() {
+    public function setUp()
+    {
         $this->testLength = 40;
         $this->testDelimiter = '[...]';
         $this->testText = "Far far away, behind the word mountains,
@@ -21,17 +24,17 @@ class TrimsFacadeTest extends TestCase
 
     public function testTrimsChars()
     {
-        $trims = Trims::chars($this->testText, $this->testLength, $this->testDelimiter);
+        $trim = Trim::chars($this->testText, $this->testLength, $this->testDelimiter);
 
-        $this->assertInstanceOf(CharsTrimmer::class, $trims);
-        $this->assertEquals('Far far away, behind the word mount[...]', $trims->trim());
+        $this->assertInstanceOf(CharsTrimmer::class, $trim);
+        $this->assertEquals('Far far away, behind the word mount[...]', $trim->trim());
     }
 
     public function testTrimsWords()
     {
-        $trims = Trims::words($this->testText, $this->testLength, $this->testDelimiter);
+        $trim = Trim::words($this->testText, $this->testLength, $this->testDelimiter);
 
-        $this->assertInstanceOf(WordsTrimmer::class, $trims);
-        $this->assertEquals('Far far away, behind the word[...]', $trims->trim());
+        $this->assertInstanceOf(WordsTrimmer::class, $trim);
+        $this->assertEquals('Far far away, behind the word[...]', $trim->trim());
     }
 }

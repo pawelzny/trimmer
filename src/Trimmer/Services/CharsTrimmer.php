@@ -5,20 +5,8 @@ use Trimmer\Contracts\Trimmable;
 
 class CharsTrimmer extends Trimmer implements Trimmable
 {
-    /**
-     * Trimmer constructor
-     *
-     * @param string $string String to trim.
-     * @param int|null $length Optional length of trimmed string
-     * @param string|null $delimiter Optional delimiter string
-     */
-	public function __construct($string, $length=null, $delimiter=null)
-    {
-        parent::__construct($string, $length, $delimiter);
-	}
-
 	/**
-	 * Perform trimming on text
+	 * Perform string trimming
      *
      * @return string Trimmed string
      */

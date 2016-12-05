@@ -6,7 +6,7 @@ use Trimmer\Exceptions\TrimmerLengthException;
 use Trimmer\Exceptions\TrimmerStringException;
 
 
-abstract class Trimmer implements Trimmable
+class Trimmer implements Trimmable
 {
     const ELLIPSIS = "...";
     const EOL = PHP_EOL;
@@ -84,4 +84,14 @@ abstract class Trimmer implements Trimmable
 			throw new TrimmerLengthException();
         }
 	}
+
+    /**
+     * Perform string trimming
+     *
+     * @return string Trimmed string
+     */
+    function trim()
+    {
+        return trim($this->string) . $this->delimiter;
+    }
 }

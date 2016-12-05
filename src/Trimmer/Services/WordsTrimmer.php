@@ -5,22 +5,16 @@ use Trimmer\Contracts\Trimmable;
 
 class WordsTrimmer extends Trimmer implements Trimmable
 {
-    protected $split_pattern = '/([\s\n\r]+)/';
+    /**
+     * Token splitting pattern used to trim string with words aware.
+     * Patter matches splitting by space and new line
+     *
+     * @var string
+     */
+    protected $split_pattern = '/([\t\s\n\r]+)/';
 
     /**
-     * Trimmer constructor
-     *
-     * @param string $string String to trim.
-     * @param int|null $length Optional length of trimmed string
-     * @param string|null $delimiter Optional delimiter string
-     */
-	public function __construct($string, $length=null, $delimiter=null)
-    {
-        parent::__construct($string, $length, $delimiter);
-	}
-
-	/**
-	 * Perform trimming on text
+     * Perform string trimming
      *
      * @return string Trimmed string
      */
