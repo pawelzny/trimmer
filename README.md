@@ -1,8 +1,7 @@
 # Trimmer
 
-Helps with trimming long string to given length.
-Trimmer supports trim to specific characters length with and without
-rounding to whole word.
+Trimmer provide support for straight trimming string to given length,
+and also trimming with words aware. Will not cut word in half.
 
 ## Installation:
 
@@ -18,18 +17,24 @@ php composer.phar require pawelzny/trimmer
 
 ## Get started
 
-For Example if you have string: *"Helps with trimming long string"*,
-and you want to trim it to 15 characters long. You have two options:
+Use facade to access Trimmer objects or import proper class and use directly.
 
 
 ### Trim to characters length:
 
 ```php
 <?PHP
-use Trimmer\Trimmer;
+use Trimmer\Trim;
 
-$trim = new Trimmer('Helps with trimming long string', $length=15);
-$trim->toCharacters(); // output: Helps with trim...
+$string = "Far far away, behind the word mountains,
+          far from the countries Vokalia and Consonantia, there live
+          the blind texts. Separated they live in Bookmarksgrove right
+          at the coast of the Semantics, a large language ocean.";
+
+
+$trim = Trim::chars($string, $length=40);
+
+echo $trim->trim(); // Far far away, behind the word mountai...
 ```
 
 
@@ -37,81 +42,67 @@ $trim->toCharacters(); // output: Helps with trim...
 
 ```php
 <?PHP
-use Trimmer\Trimmer;
+use Trimmer\Trim;
 
-$trim = new Trimmer('Helps with trimming long string', $length=15);
-$trim->toWords(); // output: Helps with...
+$string = "Far far away, behind the word mountains,
+          far from the countries Vokalia and Consonantia, there live
+          the blind texts. Separated they live in Bookmarksgrove right
+          at the coast of the Semantics, a large language ocean.";
+
+$trim = Trim::words($string, $length=40);
+
+echo $trim->trim(); // Far far away, behind the word...
 ```
-
-As you can see, word "trimming" is to long so trimmer skip non fitting word.
-
-
 
 # API
 
-Supported API can be used on runtime.
-
-
-## Build in delimiter constants:
+## Builds in constants:
 
 ```php
 <?PHP
-use Trimmer\Trimmer;
+use Trimmer\Trim;
 
-echo Trimmer::ELIPSIS; // ...
-echo Trimmer::EOL; // [end of line]
-echo Trimmer::SPACE; // [white space]
-echo Trimmer::TABULATOR; // [tab character]
+echo Trim::ELLIPSIS; // ...
+echo Trim::EOL; // [end of line]
+echo Trim::SPACE; // [white space]
+echo Trim::TABULATOR; // [tab character]
+echo Trim::DEFAULT_DELIMITER; // ...
 ```
 
+## Facade:
 
-## Public properties:
+### Trim::chars()
 
-```php
-<?PHP
-use Trimmer\Trimmer;
+`CharsTrimmer: constructor(string: $string [, int: $length=null [, string: $delimiter=null]])`
 
-$trim = new Trimmer('Lorem ipsum', $length=5, $delimiter=Trimmer::ELIPSIS);
+### Trim::words()
 
-echo $trim->text; // Lorem ipsum
-echo $trim->delimiter; // ...
-echo $trim->length; // 5
-```
-
-## Exceptions:
-
-### Trimmer Length Exception
-`TrimmerLengthException('Length must be type of integer or null')`
-
-This exception is throw always when length property is not type of Integer or Null.
-You can catch this exception exclusively.
+`WordsTrimmer: constructor(string: $string [, int: $length=null [, string: $delimiter=null]])`
 
 ```php
 <?PHP
 
-use Trimmer\Trimmer;
+use Trimmer\Trim;
 
-try {
-    $trim = new Trimmer('Lorem ipsum', $length='not an integer or null');
-} catch (Trimmer\TrimmerLengthException) {
-    die('something goes wrong');
-}
+$chars = Trim::chars($string, $length=30, $delimiter='');
+$words = Trim::words($string, $length=30, $delimiter='');
 ```
-
 
 ## Methods:
 
-### Create new Trimmer object
-`Trimmer: constructor(string: $string [, int: $length=null [, string: $delimiter=self::ELIPSIS]])`
+### Trim
+`string: trim()`
+
+Performs trimming on string and return new trimmed string
 
 ```php
 <?PHP
 
-use Trimmer\Trimmer;
+use Trimmer\Trim;
 
-$trim = new Trimmer('Lorem ipsum', $length=5, $delimiter=Trimmer::EOL);
+Trim::chars($string)->trim();
+Trim::words($string)->trim();
 ```
-
 
 ### Set new length
 `null: setLength(int: $length)`
@@ -120,13 +111,11 @@ $trim = new Trimmer('Lorem ipsum', $length=5, $delimiter=Trimmer::EOL);
 
 ```php
 <?PHP
-use Trimmer\Trimmer;
+use Trimmer\Trim;
 
-$trim = new Trimmer('my funky string');
+$trim = Trim::chars($string);
 $trim->setLength(30);
-echo $trim->length; // 27  (in this example: 30 - length_of_delimiter = 27)
 ```
-Default delimiter is set to Trimmer::ELIPSIS which is 3 characters length.
 
 ### Set Delimiter
 `null: setDelimiter(string: $delimiter)`
@@ -135,31 +124,27 @@ Default delimiter is set to Trimmer::ELIPSIS which is 3 characters length.
 <?PHP
 use Trimmer\Trimmer;
 
-$trim = new Trimmer('my funky string', $length=6);
+$trim = Trim::chars($string);
 $trim->setDelimiter('[read more]');
-$trim->delimiter; // [read more]
 ```
 
+### Without Facade
 
-### Trim to characters length
-`string: toCharacters()`
+If you do not want to use facade you can create objects directly.
 
 ```php
 <?PHP
-use Trimmer\Trimmer;
 
-$trim = new Trimmer('my funky string', $length=6);
-echo $trim->toCharacters(); // my fun...
-```
+use Trimmer\Services\WordsTrimmer;
+use Trimmer\Services\CharsTrimmer;
 
+$chars = new CharsTrimmer($string, $length, $delimiter);
+$chars->setDelimiter($newDelimiter);
+$chars->setLength($newLength);
+$chars->trim();
 
-### Trim to whole words
-`string: toWords()`
-
-```php
-<?PHP
-use Trimmer\Trimmer;
-
-$trim = new Trimmer('my funky string', $length=11);
-echo $trim->toWords(); // my funky...
+$words = new WordsTrimmer($string, $length, $delimiter);
+$words->setDelimiter($newDelimiter);
+$words->setLength($newLength);
+$words->trim();
 ```

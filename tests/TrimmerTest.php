@@ -1,6 +1,6 @@
 <?php
 use PHPUnit\Framework\TestCase;
-use Trimmer\Trimmer;
+use Trimmer\Services\Trimmer;
 
 class TrimmerTest extends TestCase
 {
@@ -8,7 +8,8 @@ class TrimmerTest extends TestCase
     public $testDelimiter;
     public $testText;
 
-    public function setUp() {
+    public function setUp()
+    {
         $this->testLength = 10;
         $this->testDelimiter = '[...]';
         $this->testText = "Far far away, behind the word mountains,
@@ -17,131 +18,109 @@ class TrimmerTest extends TestCase
         at the coast of the Semantics, a large language ocean.";
     }
 
-    public function testTextAsignable()
+    public function testConstructor()
     {
-        // create new trimmer object with text - length and delimiter should be set to default
-        $trim = new Trimmer($this->testText);
+        $trimmer = new Trimmer($this->testText, $this->testLength, $this->testDelimiter);
 
-        $this->assertEquals($trim->text, $this->testText);
-        $this->assertEquals($trim->delimiter, '...');
-        $this->assertEquals($trim->length, strlen($this->testText) - strlen($trim->delimiter));
-    }
+        $this->assertInstanceOf(Trimmer::class, $trimmer);
 
-    public function testLengthAsignable()
-    {
-        // create new trimmer object with text, and length - delimiter should be set to default
-        $trim = new Trimmer($this->testText, $this->testLength);
+        $class = new ReflectionClass($trimmer);
 
-        $this->assertEquals($this->testText, $trim->text);
-        $this->assertEquals($trim->delimiter, '...');
-        $this->assertEquals($trim->length, $this->testLength - strlen($trim->delimiter));
-    }
+        $property = $class->getProperty('string');
+        $property->setAccessible(true);
+        $this->assertEquals($this->testText, $property->getValue($trimmer));
 
-    public function testDelimiterAsignable()
-    {
-        // create new trimmer object with text, length, and delimiter
-        $trim = new Trimmer($this->testText, $this->testLength, $this->testDelimiter);
+        $property = $class->getProperty('length');
+        $property->setAccessible(true);
+        $this->assertEquals($this->testLength, $property->getValue($trimmer));
 
-        // check if all parameters have been assigned properly
-        $this->assertEquals($this->testText, $trim->text);
-        $this->assertEquals($trim->delimiter, $this->testDelimiter);
-        $this->assertEquals($trim->length, $this->testLength - strlen($this->testDelimiter));
+        $property = $class->getProperty('trim_length');
+        $property->setAccessible(true);
+        $this->assertEquals($this->testLength - strlen($this->testDelimiter), $property->getValue($trimmer));
+
+        $property = $class->getProperty('delimiter');
+        $property->setAccessible(true);
+        $this->assertEquals($this->testDelimiter, $property->getValue($trimmer));
     }
 
     /**
-     * @expectedException \Trimmer\TrimmerLengthException
+     * @expectedException \Trimmer\Exceptions\TrimmerLengthException
      */
-    public function testLengthThrowException()
+    public function testNotNumberLengthThrowException()
     {
         // create new trimmer object with wrong length
-        $trim = new Trimmer($this->testText, $length='not a number'); // should throw exception
-    }
-
-    public function testToWords()
-    {
-        // create new trimmer object
-        $trim = new Trimmer($this->testText, $this->testLength);
-        $outputShouldBe = 'Far far...';
-
-        $this->assertEquals($trim->toWords(), $outputShouldBe);
-    }
-
-    public function testToCharacters()
-    {
-        // create new trimmer object
-        $trim = new Trimmer($this->testText, $this->testLength, $this->testDelimiter);
-        $outputShouldBe = "Far f[...]";
-
-        $this->assertEquals($trim->toCharacters(), $outputShouldBe);
-    }
-
-    public function testSetDelimiter()
-    {
-        // create new trimmer object
-        $trim = new Trimmer($this->testText, $this->testLength, $delimiter='//');
-        $newDelimiter = '/{...}/';
-
-        // test length counted on construction init
-        $this->assertEquals($trim->length, $this->testLength - strlen($trim->delimiter));
-
-        // set new Delimiter
-        $trim->setDelimiter($newDelimiter);
-        $this->assertEquals($trim->delimiter, $newDelimiter);
-        $this->assertEquals($trim->length, $this->testLength - strlen($newDelimiter));
-    }
-
-    public function testSetLength()
-    {
-        // create new trimmer object
-        $trim = new Trimmer($this->testText);
-        $initLegthShouldBe = strlen($this->testText) - strlen($trim->delimiter);
-
-        // test length counted on construction init
-        $this->assertEquals($trim->length, $initLegthShouldBe);
-
-        // set new length with setLength() method
-        $trim->setLength($this->testLength);
-        $this->assertEquals($trim->length, $this->testLength - strlen($trim->delimiter));
-
-        // set length to null to go back to init state
-        $trim->setLength($length=null);
-        $this->assertEquals($trim->length, $initLegthShouldBe);
+        new Trimmer($this->testText, $length='not a number'); // should throw exception
     }
 
     /**
-     * @expectedException \Trimmer\TrimmerLengthException
+     * @expectedException \Trimmer\Exceptions\TrimmerLengthException
      */
-    public function testSetLengthThrowException()
+    public function testNegativeLengthThrowException()
     {
-        $trim = new Trimmer($this->testText);
-        $trim->setLength('not a number'); // should throw exception
+        // create new trimmer object with negative length
+        new Trimmer($this->testText, $length=-10); // should throw exception
     }
 
-    public function testGetLengthWhenSet()
+    /**
+     * @expectedException \Trimmer\Exceptions\TrimmerLengthException
+     */
+    public function testNotIntegerLengthThrowException()
     {
-        // create new trimmer object
-        $trim = new Trimmer($this->testText, $this->testLength, $this->testDelimiter);
-
-        // create new Reflection Class based on trimmer object
-        $class = new \ReflectionClass($trim);
-        $method = $class->getMethod('getLength'); // access protected method
-        $method->setAccessible(true); // make it accesible as public
-
-        $result = $method->invokeArgs($trim, $args=[]); // invoke protected method with argumets array
-        $this->assertEquals($result, $trim->length);
+        // create new trimmer object with negative length
+        new Trimmer($this->testText, $length=2.5); // should throw exception
     }
 
-    public function testGetLengthWhenNull()
+    /**
+     * @expectedException \Trimmer\Exceptions\TrimmerStringException
+     */
+    public function testNotStringThrowException()
+    {
+        // create new trimmer object with negative length
+        new Trimmer(234234234); // should throw exception
+    }
+
+    public function testSetNewDelimiter()
+    {
+        $trimmer = new Trimmer($this->testText, $this->testLength, $delimiter='//');
+        $class = new ReflectionClass($trimmer);
+
+        $property = $class->getProperty('delimiter');
+        $property->setAccessible(true);
+
+        $newDelimiter = '/{...}/';
+        $trimmer->setDelimiter($newDelimiter);
+
+        // set new Delimiter
+        $this->assertEquals($newDelimiter, $property->getValue($trimmer));
+    }
+
+    public function testSetNewLength()
     {
         // create new trimmer object
-        $trim = new Trimmer($this->testText, $length=null, $this->testDelimiter);
+        $trimmer = new Trimmer($this->testText, $this->testLength, $this->testDelimiter);
+        $class = new ReflectionClass($trimmer);
 
-        // create new Reflection Class based on trimmer object
-        $class = new \ReflectionClass($trim);
-        $method = $class->getMethod('getLength'); // access protected method
-        $method->setAccessible(true); // make it accesible as public
+        $property = $class->getProperty('trim_length');
+        $property->setAccessible(true);
 
-        $result = $method->invokeArgs($trim, $args=[]); // invoke protected method with argumets array
-        $this->assertEquals($result, strlen($this->testText) - strlen($trim->delimiter));
+        $trimLengthShouldBe = $this->testLength - strlen($this->testDelimiter);
+
+        // test length counted on construction init
+        $this->assertEquals($trimLengthShouldBe, $property->getValue($trimmer));
+    }
+
+    /**
+     * @expectedException \Trimmer\Exceptions\TrimmerLengthException
+     */
+    public function testSetNewLengthThrowException()
+    {
+        $trimmer = new Trimmer($this->testText);
+        $trimmer->setLength('not a number'); // should throw exception
+    }
+    
+    public function testTrim()
+    {
+        $trimmer = new Trimmer($this->testText, $this->testLength, $this->testDelimiter);
+        $this->assertEquals($this->testText . $this->testDelimiter, $trimmer->trim());
     }
 }
