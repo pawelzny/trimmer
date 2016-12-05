@@ -22,6 +22,16 @@ class TrimFacadeTest extends TestCase
         at the coast of the Semantics, a large language ocean.";
     }
 
+    public function testTrimConstants()
+    {
+        $this->assertEquals('...', Trim::DEFAULT_DELIMITER);
+
+        $this->assertEquals('...', Trim::ELLIPSIS);
+        $this->assertEquals(PHP_EOL, Trim::EOL);
+        $this->assertEquals("\t", Trim::TABULATOR);
+        $this->assertEquals(' ', Trim::SPACE);
+    }
+
     public function testTrimsChars()
     {
         $trim = Trim::chars($this->testText, $this->testLength, $this->testDelimiter);

@@ -79,16 +79,6 @@ class TrimmerTest extends TestCase
         new Trimmer(234234234); // should throw exception
     }
 
-    public function testTrimmerConstants()
-    {
-        $this->assertEquals('...', Trimmer::DEFAULT_DELIMITER);
-
-        $this->assertEquals('...', Trimmer::ELLIPSIS);
-        $this->assertEquals(PHP_EOL, Trimmer::EOL);
-        $this->assertEquals("\t", Trimmer::TABULATOR);
-        $this->assertEquals(' ', Trimmer::SPACE);
-    }
-
     public function testSetNewDelimiter()
     {
         $trimmer = new Trimmer($this->testText, $this->testLength, $delimiter='//');

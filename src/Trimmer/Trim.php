@@ -13,6 +13,13 @@ use Trimmer\Services\WordsTrimmer;
  */
 class Trim
 {
+    const ELLIPSIS = "...";
+    const EOL = PHP_EOL;
+    const TABULATOR = "\t";
+    const SPACE = " ";
+
+    const DEFAULT_DELIMITER = Trim::ELLIPSIS;
+
     private function __construct() {}
 
     /**

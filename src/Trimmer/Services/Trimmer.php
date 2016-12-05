@@ -1,5 +1,6 @@
 <?php namespace Trimmer\Services;
 
+use Trimmer\Trim;
 use Trimmer\Contracts\Trimmable;
 use Trimmer\Exceptions\TrimmerDelimiterException;
 use Trimmer\Exceptions\TrimmerLengthException;
@@ -8,17 +9,10 @@ use Trimmer\Exceptions\TrimmerStringException;
 
 class Trimmer implements Trimmable
 {
-    const ELLIPSIS = "...";
-    const EOL = PHP_EOL;
-    const TABULATOR = "\t";
-    const SPACE = " ";
-
-    const DEFAULT_DELIMITER = Trimmer::ELLIPSIS;
-
     protected $string = '';
     protected $length = null;
     protected $trim_length = null;
-    protected $delimiter = Trimmer::DEFAULT_DELIMITER;
+    protected $delimiter = Trim::DEFAULT_DELIMITER;
 
     /**
      * Trimmer constructor
@@ -51,7 +45,7 @@ class Trimmer implements Trimmable
     public function setDelimiter($delimiter)
     {
         if ($delimiter === null) {
-            $delimiter = Trimmer::DEFAULT_DELIMITER;
+            $delimiter = Trim::DEFAULT_DELIMITER;
         }
 
         if (is_string($delimiter)) {
