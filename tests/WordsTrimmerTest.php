@@ -2,6 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 use Trimmer\Services\WordsTrimmer;
+use Trimmer\Trim;
 
 
 class WordsTrimmerTest extends TestCase
@@ -12,7 +13,7 @@ class WordsTrimmerTest extends TestCase
 
     public function setUp()
     {
-        $this->testLength = 40;
+        $this->testLength = 65;
         $this->testDelimiter = '[...]';
         $this->testText = "Far far away, behind the word mountains,
         far from the countries Vokalia and Consonantia, there live
@@ -23,8 +24,20 @@ class WordsTrimmerTest extends TestCase
     public function testTrim()
     {
         $trim = new WordsTrimmer($this->testText, $this->testLength, $this->testDelimiter);
-        $outputShouldBe = "Far far away, behind the word[...]";
+        $expectedOutput = "Far far away, behind the word mountains, far from the[...]";
 
-        $this->assertEquals($trim->trim(), $outputShouldBe);
+        $this->assertEquals($trim->trim(), $expectedOutput);
+    }
+
+    public function testEmptyStringTrim()
+    {
+        $trim = new WordsTrimmer('', $this->testLength);
+        $this->assertEquals($trim->trim(), Trim::DEFAULT_DELIMITER);
+    }
+
+    public function testEmptyStringWithNewLine()
+    {
+        $trim = new WordsTrimmer("\n\r", $this->testLength);
+        $this->assertEquals($trim->trim(), Trim::DEFAULT_DELIMITER);
     }
 }
