@@ -6,12 +6,12 @@ use Trimmer\Contracts\Trimmable;
 class WordsTrimmer extends Trimmer implements Trimmable
 {
     /**
-     * Token splitting pattern used to trim string with words aware.
-     * Patter matches splitting by space and new line
+     * Token splitting pattern used to split string into tokens.
+     * Patter matches splitting by space, tab and new line.
      *
      * @var string
      */
-    protected $split_pattern = '/([\t\s\n\r]+)/';
+    protected $tokenizer = " \t\n\r";
 
     /**
      * Perform string trimming
@@ -20,20 +20,17 @@ class WordsTrimmer extends Trimmer implements Trimmable
      */
     public function trim()
     {
-        $tokens = preg_split($this->split_pattern , $this->string, $limit=null, $flag=PREG_SPLIT_DELIM_CAPTURE);
-
-        $text_parts = [];
-        $tokens_length = 0;
-        foreach ($tokens as $token) {
-            $tokens_length += strlen($token);
-
-            if ($tokens_length <= $this->trim_length) {
-                array_push($text_parts, $token);
+        $token = strtok($this->string, $this->tokenizer);
+        $text = '';
+        while ($token !== false) {
+            if (strlen($text . ' ' . $token) <= $this->trim_length) {
+                $text .= ' ' . $token;
+                $token = strtok($this->tokenizer);
             } else {
                 break;
             }
         }
 
-        return trim(' '.join($text_parts)) . $this->delimiter;
+        return trim($text) . $this->delimiter;
     }
 }
