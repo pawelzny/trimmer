@@ -117,7 +117,7 @@ class TrimmerTest extends TestCase
         $trimmer = new Trimmer($this->testText);
         $trimmer->setLength('not a number'); // should throw exception
     }
-    
+
     public function testTrim()
     {
         $trimmer = new Trimmer($this->testText, $this->testLength, $this->testDelimiter);

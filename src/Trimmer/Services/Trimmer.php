@@ -23,19 +23,19 @@ class Trimmer implements Trimmable
      *
      * @throws \Trimmer\Exceptions\TrimmerStringException
      */
-	public function __construct($string, $length=null, $delimiter=null)
+    public function __construct($string, $length=null, $delimiter=null)
     {
         if (! is_string($string)) {
             throw new TrimmerStringException();
         }
 
         $this->string = $string;
-		$this->setLength($length);
-		$this->setDelimiter($delimiter);
-	}
+        $this->setLength($length);
+        $this->setDelimiter($delimiter);
+    }
 
-	/**
-	 * Set new delimiter for trimmed string.
+    /**
+     * Set new delimiter for trimmed string.
      *
      * @param string $delimiter
      * @return void
@@ -54,11 +54,11 @@ class Trimmer implements Trimmable
         } else {
             throw new TrimmerDelimiterException();
         }
-	}
+    }
 
-	/**
+    /**
      *
-	 * Set new length of trimmed string.
+     * Set new length of trimmed string.
      *
      * @param int $length
      * @return void
@@ -75,9 +75,9 @@ class Trimmer implements Trimmable
             $this->length = $length;
             $this->trim_length = $this->length - strlen($this->delimiter);
         } else {
-			throw new TrimmerLengthException();
+            throw new TrimmerLengthException();
         }
-	}
+    }
 
     /**
      * Perform string trimming

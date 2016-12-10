@@ -1,6 +1,6 @@
 # Trimmer
 
-Trimmer provide support for straight trimming string to given length,
+Trimmer provide support for string trimming to given length methods,
 and also trimming with words aware. Will not cut word in half.
 
 ## Installation:
@@ -10,7 +10,7 @@ and also trimming with words aware. Will not cut word in half.
 composer require pawelzny/trimmer
 ```
 
-**If composer is installed localy in your project directory:**
+**If composer is installed locally in your project directory:**
 ```
 php composer.phar require pawelzny/trimmer
 ```
@@ -100,6 +100,7 @@ Performs trimming on string and return new trimmed string
 
 use Trimmer\Trim;
 
+$string = 'Far far away, behind the word mountains';
 Trim::chars($string)->trim();
 Trim::words($string)->trim();
 ```
@@ -113,6 +114,7 @@ Trim::words($string)->trim();
 <?PHP
 use Trimmer\Trim;
 
+$string = 'Far far away, behind the word mountains';
 $trim = Trim::chars($string);
 $trim->setLength(30);
 ```
@@ -122,8 +124,9 @@ $trim->setLength(30);
 
 ```php
 <?PHP
-use Trimmer\Trimmer;
+use Trimmer\Trim;
 
+$string = 'Far far away, behind the word mountains';
 $trim = Trim::chars($string);
 $trim->setDelimiter('[read more]');
 ```
@@ -137,8 +140,17 @@ If you do not want to use facade you can create objects directly.
 
 use Trimmer\Services\WordsTrimmer;
 use Trimmer\Services\CharsTrimmer;
+use Trimmer\Trim;
+
+$string = 'Far far away, behind the word mountains';
+$length = 30;
+$delimiter = Trim::DEFAULT_DELIMITER;
 
 $chars = new CharsTrimmer($string, $length, $delimiter);
+
+$newDelimiter = 'read more...';
+$newLength = 40;
+
 $chars->setDelimiter($newDelimiter);
 $chars->setLength($newLength);
 $chars->trim();

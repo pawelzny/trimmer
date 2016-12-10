@@ -35,5 +35,5 @@ class WordsTrimmer extends Trimmer implements Trimmable
         }
 
         return trim(' '.join($text_parts)) . $this->delimiter;
-	}
+    }
 }
