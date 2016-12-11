@@ -4,7 +4,6 @@ use PHPUnit\Framework\TestCase;
 use Trimmer\Services\WordsTrimmer;
 use Trimmer\Trim;
 
-
 class WordsTrimmerTest extends TestCase
 {
     public $testLength;

@@ -3,7 +3,6 @@
 use PHPUnit\Framework\TestCase;
 use Trimmer\Services\CharsTrimmer;
 
-
 class CharsTrimmerTest extends TestCase
 {
     public $testLength;

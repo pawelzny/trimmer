@@ -5,7 +5,6 @@ use Trimmer\Services\CharsTrimmer;
 use Trimmer\Services\WordsTrimmer;
 use Trimmer\Trim;
 
-
 class TrimFacadeTest extends TestCase
 {
     public $testLength;

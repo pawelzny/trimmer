@@ -2,7 +2,6 @@
 
 use Trimmer\Contracts\Trimmable;
 
-
 class CharsTrimmer extends Trimmer implements Trimmable
 {
     /**

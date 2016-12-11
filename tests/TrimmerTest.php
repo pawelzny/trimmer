@@ -49,7 +49,7 @@ class TrimmerTest extends TestCase
     public function testNotNumberLengthThrowException()
     {
         // create new trimmer object with wrong length
-        new Trimmer($this->testText, $length='not a number'); // should throw exception
+        new Trimmer($this->testText, $length = 'not a number'); // should throw exception
     }
 
     /**
@@ -58,7 +58,7 @@ class TrimmerTest extends TestCase
     public function testNegativeLengthThrowException()
     {
         // create new trimmer object with negative length
-        new Trimmer($this->testText, $length=-10); // should throw exception
+        new Trimmer($this->testText, $length = -10); // should throw exception
     }
 
     /**
@@ -67,7 +67,7 @@ class TrimmerTest extends TestCase
     public function testNotIntegerLengthThrowException()
     {
         // create new trimmer object with negative length
-        new Trimmer($this->testText, $length=2.5); // should throw exception
+        new Trimmer($this->testText, $length = 2.5); // should throw exception
     }
 
     /**
@@ -81,7 +81,7 @@ class TrimmerTest extends TestCase
 
     public function testSetNewDelimiter()
     {
-        $trimmer = new Trimmer($this->testText, $this->testLength, $delimiter='//');
+        $trimmer = new Trimmer($this->testText, $this->testLength, $delimiter = '//');
         $class = new ReflectionClass($trimmer);
 
         $property = $class->getProperty('delimiter');

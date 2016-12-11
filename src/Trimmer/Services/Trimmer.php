@@ -1,11 +1,10 @@
 <?php namespace Trimmer\Services;
 
-use Trimmer\Trim;
 use Trimmer\Contracts\Trimmable;
 use Trimmer\Exceptions\TrimmerDelimiterException;
 use Trimmer\Exceptions\TrimmerLengthException;
 use Trimmer\Exceptions\TrimmerStringException;
-
+use Trimmer\Trim;
 
 class Trimmer implements Trimmable
 {
@@ -23,7 +22,7 @@ class Trimmer implements Trimmable
      *
      * @throws \Trimmer\Exceptions\TrimmerStringException
      */
-    public function __construct($string, $length=null, $delimiter=null)
+    public function __construct($string, $length = null, $delimiter = null)
     {
         if (! is_string($string)) {
             throw new TrimmerStringException();
@@ -84,8 +83,8 @@ class Trimmer implements Trimmable
      *
      * @return string Trimmed string
      */
-    function trim()
+    public function trim()
     {
-        return trim($this->string) . $this->delimiter;
+        return \trim($this->string) . $this->delimiter;
     }
 }

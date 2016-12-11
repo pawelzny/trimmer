@@ -1,11 +1,11 @@
 <?php namespace Trimmer\Contracts;
 
-
-interface Trimmable {
+interface Trimmable
+{
     /**
      * Perform string trimming
      *
      * @return string Trimmed string
      */
-    function trim();
+    public function trim();
 }

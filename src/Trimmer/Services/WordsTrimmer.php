@@ -2,7 +2,6 @@
 
 use Trimmer\Contracts\Trimmable;
 
-
 class WordsTrimmer extends Trimmer implements Trimmable
 {
     /**
